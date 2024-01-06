@@ -1,4 +1,9 @@
+import * as utils from './utils.js';
+
 // 오늘의 날짜를 가져온다.
+const [year, month, day] = utils.getTime();
+console.log(year, month, day);
+
 // 참조하는 폴더 내부에 날짜에 맞는 파일들을 찾는다.
 // 파일이 없다면 진행하지 않는다.
 // 파일들이 있다면 다음으로 진행한다.
