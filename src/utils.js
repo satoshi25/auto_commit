@@ -1,10 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 import process from 'process';
+import os from 'os';
 
 
 const cur = process.cwd();
 const uploadFolder = path.join(cur, 'public', 'commit_files');
+const repoFolder = path.join(os.homedir(), 'Desktop', 'Algorithm', 'Algorithm');
 
 
 export function getTime() {
@@ -54,4 +56,39 @@ export function openFile(files) {
 		}
 	}
 	return dataObj;
+}
+
+
+export function makeFile(dataObj, year, month, day) {
+	const monthDir = path.join(repoFolder, `${year}-${month}`);
+	const workingDir = path.join(monthDir, `${month}${day}-Baekjoon`);
+	const questionDir = path.join(workingDir, `${month}${day}_${dataObj['message'].split(' ')[0]}.${dataObj["language"]}`);
+	const inputDir = path.join(workingDir, `input.txt`);
+	let result = [true, dataObj["message"]];
+
+	if (!fs.existsSync(monthDir)) {
+		fs.mkdirSync(monthDir);
+	}
+
+	if (!fs.existsSync(workingDir) && result) {
+		fs.mkdirSync(workingDir);
+	} else {
+		result[0] = false;
+		console.log(`${month}${day}-Baekjoon 폴더가 이미 존재합니다.`);
+	}
+
+	if (!fs.existsSync(questionDir) && result) {
+		fs.writeFileSync(questionDir, dataObj["question"]);
+	} else {
+		result[0] = false;
+		console.log(`문제파일이 이미 존재합니다.`);
+	}
+
+	if (!fs.existsSync(inputDir) && result) {
+		fs.writeFileSync(inputDir, dataObj["input"]);
+	} else {
+		result[0] = false;
+		console.log(`입력파일이 이미 존재합니다.`);
+	}
+	return result;
 }

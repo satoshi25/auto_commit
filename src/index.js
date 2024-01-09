@@ -15,8 +15,10 @@ if (foundFile.length === 0) {
 
 	// 해당 파일들을 읽어 문서들과, message를 가져온다.
 	let dataObj = utils.openFile(foundFile);
-	console.log(dataObj);
+
+	// 해당 문서들 정보로 commit 할 폴더의 유무를 확인한 후 commit할 위치에 파일을 생성한다.
+	let result = utils.makeFile(dataObj, year, month, day);
+	console.log(result);
 }
 
-// 해당 문서들 정보로 commit 할 폴더의 유무를 확인한 후 commit할 위치에 파일을 생성한다.
 // sh 파일을 실행하여 commit 한다.
