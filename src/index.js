@@ -23,5 +23,8 @@ if (foundFile.length === 0) {
 	if (result[0] !== false) {
 		await utils.commitMessage(result[1]);
 		console.log(`${year}. ${month}. ${day}. commit complete..`);
+		await utils.moveFile(month, day);
+		console.log('File Move complete..')
+		console.log(`===============================================`);
 	}
 }

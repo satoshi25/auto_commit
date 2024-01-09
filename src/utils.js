@@ -10,6 +10,7 @@ dotenv.config();
 const cur = process.cwd();
 const uploadFolder = path.join(cur, process.env.UPLOAD_FOLDER);
 const repoFolder = path.join(os.homedir(), process.env.REPO_FOLDER);
+const completeFolder = path.join(cur, process.env.COMPLETE_FOLDER);
 
 
 export function getTime() {
@@ -111,4 +112,17 @@ export async function commitMessage(message) {
 			resolve(stdout)
 		});
 	});
+}
+
+
+export async function moveFile(month, day) {
+	const fileNames = findFiles(month, day);
+	for (let i = 0; i < fileNames.length; i++) {
+		let filePath = fileNames[i].join('.');
+		fs.rename(path.join(uploadFolder, filePath), path.join(completeFolder, filePath), (error, data) => {
+			if (error) {
+				console.error(error);
+			}
+		});
+	}
 }
