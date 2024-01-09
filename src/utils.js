@@ -2,11 +2,14 @@ import fs from 'fs';
 import path from 'path';
 import process from 'process';
 import os from 'os';
+import * as dotenv from 'dotenv';
+import { exec } from 'child_process';
 
 
+dotenv.config();
 const cur = process.cwd();
-const uploadFolder = path.join(cur, 'public', 'commit_files');
-const repoFolder = path.join(os.homedir(), 'Desktop', 'Algorithm', 'Algorithm');
+const uploadFolder = path.join(cur, process.env.UPLOAD_FOLDER);
+const repoFolder = path.join(os.homedir(), process.env.REPO_FOLDER);
 
 
 export function getTime() {
@@ -91,4 +94,21 @@ export function makeFile(dataObj, year, month, day) {
 		console.log(`입력파일이 이미 존재합니다.`);
 	}
 	return result;
+}
+
+
+export async function commitMessage(message) {
+	let env = process.env;
+	env.MESSAGE = message;
+	return new Promise((resolve, reject) => {
+		exec(`sh git_command.sh`, { env: env }, (error, stdout, stderr) => {
+			if (error) {
+				console.error(`exec error: ${error}`);
+				return;
+			}
+			console.log(`stdout: ${stdout}`);
+			console.error(`stderr: ${stderr}`);
+			resolve(stdout)
+		});
+	});
 }

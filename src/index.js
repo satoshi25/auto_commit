@@ -18,7 +18,10 @@ if (foundFile.length === 0) {
 
 	// 해당 문서들 정보로 commit 할 폴더의 유무를 확인한 후 commit할 위치에 파일을 생성한다.
 	let result = utils.makeFile(dataObj, year, month, day);
-	console.log(result);
-}
 
-// sh 파일을 실행하여 commit 한다.
+	// sh 파일을 실행하여 commit 한다.
+	if (result[0] !== false) {
+		await utils.commitMessage(result[1]);
+		console.log(`${year}. ${month}. ${day}. commit complete..`);
+	}
+}
