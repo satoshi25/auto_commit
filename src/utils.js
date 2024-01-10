@@ -115,11 +115,18 @@ export async function commitMessage(message) {
 }
 
 
-export async function moveFile(month, day) {
-	const fileNames = findFiles(month, day);
-	for (let i = 0; i < fileNames.length; i++) {
-		let filePath = fileNames[i].join('.');
-		fs.rename(path.join(uploadFolder, filePath), path.join(completeFolder, filePath), (error, data) => {
+export async function moveFile(foundFile, year, month) {
+	const yearFolder = path.join(completeFolder, `${year}`);
+	const monthFolder = path.join(yearFolder, `${year}-${month}`);
+	if (!fs.existsSync(yearFolder)) {
+		fs.mkdirSync(yearFolder);
+	}
+	if (!fs.existsSync(monthFolder)) {
+		fs.mkdirSync(monthFolder);
+	}
+	for (let i = 0; i < foundFile.length; i++) {
+		let filePath = foundFile[i].join('.');
+		fs.rename(path.join(uploadFolder, filePath), path.join(monthFolder, filePath), (error, data) => {
 			if (error) {
 				console.error(error);
 			}
